@@ -10,14 +10,14 @@ export default function About() {
               <span className="italic">Designer at heart.</span>
             </h2>
             <p className="about-body reveal">
-              With 5 years of experience building full-stack applications, I've learned that the best code serves its
+              With 6 years of experience building full-stack applications, I've learned that the best code serves its
               users — not the other way around. I'm an Assistant Manager in IT at IFFCO Tokio, where I build systems
               that real people depend on every day.
             </p>
             <p className="about-body reveal">
-              I almost went to design school for interaction design. I didn't follow through — but that instinct never
-              left. It shows up in how I think about every interface, every flow, every decision. I care about UX not
-              as a buzzword, but as a responsibility.
+              I've always had an inclination toward product design, so design school was on the table — but I chose
+              engineering. Now I design and develop end to end, with full control over how an idea looks, feels, and
+              works. I care about UX not as a buzzword, but as a responsibility.
             </p>
             <p className="about-body reveal">
               Currently expanding my craft into React, Next.js, and Node.js — because good tools make good design
