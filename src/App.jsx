@@ -13,6 +13,7 @@ import Projects from './components/Projects'
 import Skills from './components/Skills'
 import { useCursorGlow } from './hooks/useCursorGlow'
 import { useGlobalScrollReveal } from './hooks/useScrollReveal'
+import { useThemeShortcut } from './hooks/useThemeShortcut'
 
 function HomePage() {
   return (
@@ -33,6 +34,7 @@ function HomePage() {
 function App() {
   const location = useLocation()
 
+  useThemeShortcut()
   useCursorGlow()
   useGlobalScrollReveal(`${location.pathname}${location.hash}`)
 

@@ -42,35 +42,23 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --duration: 0.6s;
 
-  /* Shadow / overlay opacity (light defaults) */
-  --shadow-color: 0, 0, 0;
-  --card-hover-shadow: rgba(0, 0, 0, 0.06);
-  --card-hover-shadow-sm: rgba(0, 0, 0, 0.05);
-  --focus-ring: rgba(26, 26, 26, 0.06);
+  /* Theme helpers */
   --nav-bg: rgba(250, 250, 248, 0.92);
-  --mobile-nav-shadow: rgba(0, 0, 0, 0.08);
   --cursor-glow: rgba(26, 26, 26, 0.02);
 }
 
-/* ---- Dark theme overrides ---- */
-[data-theme="dark"] {
+[data-theme='dark'] {
   --bg: #121212;
-  --bg-alt: #1A1A1A;
-  --surface: #1E1E1E;
-  --text: #E8E6E1;
-  --text-secondary: #A0A0A0;
-  --text-tertiary: #6B6B6B;
-  --accent: #E8E6E1;
-  --accent-subtle: #2A2A2A;
-  --border: #2A2A2A;
-  --border-light: #232323;
-
-  --shadow-color: 0, 0, 0;
-  --card-hover-shadow: rgba(0, 0, 0, 0.25);
-  --card-hover-shadow-sm: rgba(0, 0, 0, 0.2);
-  --focus-ring: rgba(232, 230, 225, 0.08);
+  --bg-alt: #1a1a1a;
+  --surface: #1e1e1e;
+  --text: #e8e6e1;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #858585;
+  --accent: #e8e6e1;
+  --accent-subtle: #2a2a2a;
+  --border: #2f2f2f;
+  --border-light: #242424;
   --nav-bg: rgba(18, 18, 18, 0.92);
-  --mobile-nav-shadow: rgba(0, 0, 0, 0.3);
   --cursor-glow: rgba(232, 230, 225, 0.03);
 }
 
@@ -79,16 +67,6 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-html, html *,
-html *::before,
-html *::after {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
-
-[data-theme="dark"] {
-  color-scheme: dark;
 }
 
 body {
@@ -417,9 +395,9 @@ ul {
 }
 
 .btn-primary:hover {
-  background: var(--text-secondary);
+  background: #333;
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--card-hover-shadow);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .btn-ghost {
@@ -717,7 +695,7 @@ ul {
 
 .project-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 60px var(--card-hover-shadow);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
 }
 
 .project-image {
@@ -799,7 +777,7 @@ ul {
 
 .blog-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 12px 40px var(--card-hover-shadow-sm);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.05);
 }
 
 .blog-meta {
@@ -1056,7 +1034,7 @@ ul {
 
 .form-input:focus {
   border-color: var(--text);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.06);
 }
 
 .form-textarea {
@@ -1204,7 +1182,7 @@ ul {
     padding: 6rem 2rem 2rem;
     gap: var(--space-md);
     transition: right 0.4s var(--ease);
-    box-shadow: -10px 0 40px var(--mobile-nav-shadow);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.08);
   }
 
   .nav-links.open {
@@ -1217,28 +1195,6 @@ ul {
 
   .nav-toggle {
     display: flex;
-  }
-
-  /* Hide desktop toggle, show mobile toggle inside drawer */
-  .theme-toggle--desktop {
-    display: none;
-  }
-
-  .theme-toggle--mobile {
-    display: flex;
-    width: auto;
-    border-radius: 100px;
-    padding: 0.5rem 1rem;
-    gap: 0.5rem;
-    margin-top: var(--space-sm);
-    border: 1px solid var(--border);
-  }
-
-  .theme-toggle--mobile .theme-toggle-label {
-    display: inline;
-    font-size: 0.875rem;
-    font-weight: 400;
-    white-space: nowrap;
   }
 
   .skills-grid {
@@ -1284,52 +1240,6 @@ ul {
     width: 100%;
     text-align: center;
   }
-}
-
-/* ============================================
-   THEME TOGGLE
-   ============================================ */
-.theme-toggle {
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-secondary);
-  transition: color 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease);
-  flex-shrink: 0;
-}
-
-.theme-toggle:hover {
-  color: var(--text);
-  border-color: var(--text-tertiary);
-  transform: rotate(15deg);
-}
-
-.theme-toggle svg {
-  width: 18px;
-  height: 18px;
-  transition: transform 0.4s var(--ease);
-}
-
-/* Mobile variant — hidden on desktop, shown inside mobile drawer */
-.theme-toggle--mobile {
-  display: none;
-}
-
-.theme-toggle-label {
-  display: none;
-}
-
-/* Nav actions group (toggle + hamburger) */
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
 }
 
 /* ============================================
