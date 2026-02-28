@@ -1,25 +1,55 @@
-import { Link, useParams } from 'react-router-dom'
-import { posts } from '../data/posts'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { getBlogBySlug } from '../lib/api'
+import Breadcrumb from './Breadcrumb'
 
 export default function BlogDetail() {
   const { slug } = useParams()
-  const post = posts.find((item) => item.slug === slug)
+  const location = useLocation()
+  const [post, setPost] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const from = location.state?.from
+  const backTo = from === 'home' ? '/#blog' : '/blog'
+  const backLabel = from === 'home' ? 'Back to home' : 'Back to blog'
+
+  useEffect(() => {
+    getBlogBySlug(slug)
+      .then(setPost)
+      .catch(() => setPost(null))
+      .finally(() => setLoading(false))
+  }, [slug])
+
+  if (loading) {
+    return (
+      <div className="detail-view">
+        <p>Loading...</p>
+      </div>
+    )
+  }
 
   if (!post) {
     return (
       <div className="detail-view">
-        <Link to="/#blog" className="detail-back">
-          &larr; Back to blog
+        <Link to={backTo} className="detail-back">
+          &larr; {backLabel}
         </Link>
         <h2 className="detail-title">Blog post not found</h2>
       </div>
     )
   }
 
+  const breadcrumbs = [
+    { label: 'Home', to: '/' },
+    { label: 'Blog', to: '/blog' },
+    { label: post.title },
+  ]
+
   return (
     <div className="detail-view">
-      <Link to="/#blog" className="detail-back">
-        &larr; Back to blog
+      <Breadcrumb items={breadcrumbs} />
+      <Link to={backTo} className="detail-back">
+        &larr; {backLabel}
       </Link>
 
       <div className="detail-header">
