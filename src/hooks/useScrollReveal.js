@@ -44,7 +44,7 @@ export function useScrollReveal(options = {}) {
  * Hook that observes all .reveal elements in the document.
  * Use once at the App level to handle all reveal animations.
  */
-export function useGlobalScrollReveal() {
+export function useGlobalScrollReveal(triggerKey = 0) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -63,12 +63,12 @@ export function useGlobalScrollReveal() {
 
     // Small delay to ensure DOM is painted
     const timer = setTimeout(() => {
-      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el))
+      document.querySelectorAll('.reveal:not(.visible)').forEach((el) => observer.observe(el))
     }, 100)
 
     return () => {
       clearTimeout(timer)
       observer.disconnect()
     }
-  }, [])
+  }, [triggerKey])
 }

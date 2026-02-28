@@ -1,0 +1,23 @@
+export const projects = [
+  {
+    slug: 'coming-soon-1',
+    number: '01',
+    title: 'Coming Soon',
+    desc: 'A detailed case study of a project highlighting the problem, process, and solution.',
+    tags: ['Spring Boot', 'Angular'],
+  },
+  {
+    slug: 'coming-soon-2',
+    number: '02',
+    title: 'Coming Soon',
+    desc: 'Another project showcasing full-stack skills and design thinking approach.',
+    tags: ['React', 'Node.js'],
+  },
+  {
+    slug: 'coming-soon-3',
+    number: '03',
+    title: 'Coming Soon',
+    desc: 'A personal side project exploring interaction design and user experience.',
+    tags: ['Next.js', 'UX Design'],
+  },
+]

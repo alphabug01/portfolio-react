@@ -1,25 +1,8 @@
-const posts = [
-  {
-    date: 'Coming Soon',
-    readTime: '5 min read',
-    title: "Why \"Good Enough\" UX Isn't Good Enough",
-    excerpt: 'Thoughts on why settling for functional-but-forgettable interfaces is a missed opportunity...',
-  },
-  {
-    date: 'Coming Soon',
-    readTime: '4 min read',
-    title: "From Spring Boot to Next.js: A Backend Dev's Frontend Journey",
-    excerpt: 'What happens when a Java developer falls in love with the frontend ecosystem...',
-  },
-  {
-    date: 'Coming Soon',
-    readTime: '6 min read',
-    title: 'The Design School I Never Attended',
-    excerpt: 'How an almost-decision shaped my approach to building software...',
-  },
-]
+import { Link } from 'react-router-dom'
+import { posts } from '../data/posts'
 
 export default function Blog() {
+
   return (
     <section className="section blog" id="blog">
       <div className="container">
@@ -30,17 +13,19 @@ export default function Blog() {
         </p>
         <div className="blog-grid">
           {posts.map((post, i) => (
-            <article className="blog-card reveal" key={i}>
-              <div className="blog-meta">
-                <span className="blog-date">{post.date}</span>
-                <span className="blog-read">{post.readTime}</span>
-              </div>
-              <h3 className="blog-title">{post.title}</h3>
-              <p className="blog-excerpt">{post.excerpt}</p>
-              <a href="#" className="blog-link">
-                Read more &rarr;
-              </a>
-            </article>
+            <Link key={post.slug} to={`/blog/${post.slug}`} className="blog-card reveal">
+              <article>
+                <div className="blog-meta">
+                  <span className="blog-date">{post.date}</span>
+                  <span className="blog-read">{post.readTime}</span>
+                </div>
+                <h3 className="blog-title">{post.title}</h3>
+                <p className="blog-excerpt">{post.excerpt}</p>
+                <span className="blog-link">
+                  Read more &rarr;
+                </span>
+              </article>
+            </Link>
           ))}
         </div>
       </div>
