@@ -1,5 +1,5 @@
 import { useLayoutEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import About from './components/About'
 import Blog from './components/Blog'
 import BlogDetail from './components/BlogDetail'
