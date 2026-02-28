@@ -22,6 +22,7 @@ import AdminDashboard from './components/admin/AdminDashboard'
 import AdminLayout from './components/admin/AdminLayout'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminProjectForm from './components/admin/AdminProjectForm'
+import AdminUsers from './components/admin/AdminUsers'
 import { AuthProvider } from './context/AuthContext'
 import { useCursorGlow } from './hooks/useCursorGlow'
 import { useGsapScrollReveal } from './hooks/useGsapScrollReveal'
@@ -134,6 +135,7 @@ function App() {
             <Route path="blogs/:slug/edit" element={<AdminBlogForm />} />
             <Route path="projects/new" element={<AdminProjectForm />} />
             <Route path="projects/:slug/edit" element={<AdminProjectForm />} />
+            <Route path="users" element={<AdminUsers />} />
             <Route path="change-password" element={<AdminChangePassword />} />
           </Route>
 

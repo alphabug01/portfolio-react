@@ -215,3 +215,47 @@ export async function deleteBlog(slug) {
   const { error } = await supabase.from("blogs").delete().eq("slug", slug);
   if (error) throw error;
 }
+
+// ── User management (admin only) ────────────────────────────
+
+export async function getUsers() {
+  const { data, error } = await supabase.from("profiles").select("*");
+  if (error) throw error;
+  return data ?? [];
+}
+
+export async function updateUser(id, updates) {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function adminCreateUser(
+  email,
+  password,
+  displayName,
+  role,
+  permissions,
+) {
+  const { data, error } = await supabase.rpc("admin_create_user", {
+    p_email: email,
+    p_password: password,
+    p_display_name: displayName ?? "",
+    p_role: role ?? "viewer",
+    p_permissions: permissions ?? {},
+  });
+  if (error) throw error;
+  return data;
+}
+
+export async function adminDeleteUser(userId) {
+  const { error } = await supabase.rpc("admin_delete_user", {
+    p_user_id: userId,
+  });
+  if (error) throw error;
+}

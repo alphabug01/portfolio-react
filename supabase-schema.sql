@@ -250,3 +250,130 @@ ON CONFLICT (slug) DO NOTHING;
 --      WITH CHECK (id = auth.uid() AND role = 'viewer');
 --
 -- ════════════════════════════════════════════════════════════
+
+
+-- ════════════════════════════════════════════════════════════
+-- USER MANAGEMENT MIGRATION
+-- Run this AFTER the initial schema above.
+-- Adds columns/ policies/ functions needed by the Admin → Users page.
+-- ════════════════════════════════════════════════════════════
+
+-- 1. Add new columns to profiles
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS email        TEXT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS display_name TEXT DEFAULT '';
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS permissions  JSONB DEFAULT '{}'::jsonb;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS created_at   TIMESTAMPTZ DEFAULT now();
+
+-- 2. Back-fill email for existing rows from auth.users
+UPDATE public.profiles p
+SET email = u.email
+FROM auth.users u
+WHERE p.id = u.id AND p.email IS NULL;
+
+-- 3. Update trigger to also copy email on sign-up
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, role)
+  VALUES (NEW.id, NEW.email, 'viewer');
+  RETURN NEW;
+END;
+$$;
+
+-- 4. Admin can read ALL profiles (existing policy only allows own row)
+DROP POLICY IF EXISTS "Admins read all profiles" ON public.profiles;
+CREATE POLICY "Admins read all profiles"
+  ON public.profiles FOR SELECT
+  USING (public.is_admin());
+
+-- 5. Admin can delete any profile
+DROP POLICY IF EXISTS "Admins delete profiles" ON public.profiles;
+CREATE POLICY "Admins delete profiles"
+  ON public.profiles FOR DELETE
+  USING (public.is_admin());
+
+-- 6. RPC: Create a new user (admin only)
+--    Inserts into auth.users + auth.identities, then updates the profile.
+CREATE OR REPLACE FUNCTION public.admin_create_user(
+  p_email        TEXT,
+  p_password     TEXT,
+  p_display_name TEXT DEFAULT '',
+  p_role         TEXT DEFAULT 'viewer',
+  p_permissions  JSONB DEFAULT '{}'::jsonb
+)
+RETURNS UUID
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth, extensions
+AS $$
+DECLARE
+  new_id UUID;
+BEGIN
+  IF NOT public.is_admin() THEN
+    RAISE EXCEPTION 'Admin access required';
+  END IF;
+
+  new_id := gen_random_uuid();
+
+  -- Create auth user
+  INSERT INTO auth.users (
+    id, instance_id, aud, role,
+    email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data,
+    created_at, updated_at
+  ) VALUES (
+    new_id,
+    '00000000-0000-0000-0000-000000000000',
+    'authenticated', 'authenticated',
+    p_email,
+    crypt(p_password, gen_salt('bf')),
+    NOW(),
+    '{"provider":"email","providers":["email"]}'::jsonb,
+    jsonb_build_object('display_name', p_display_name),
+    NOW(), NOW()
+  );
+
+  -- Create email identity (required for email/password login)
+  INSERT INTO auth.identities (
+    id, user_id, provider_id, identity_data,
+    provider, last_sign_in_at, created_at, updated_at
+  ) VALUES (
+    gen_random_uuid(), new_id, p_email,
+    jsonb_build_object('sub', new_id::text, 'email', p_email),
+    'email', NOW(), NOW(), NOW()
+  );
+
+  -- The trigger auto-creates a profile row; now update it
+  UPDATE public.profiles
+  SET role         = p_role,
+      display_name = COALESCE(p_display_name, ''),
+      permissions  = COALESCE(p_permissions, '{}'::jsonb)
+  WHERE id = new_id;
+
+  RETURN new_id;
+END;
+$$;
+
+-- 7. RPC: Delete a user (admin only, cascades from auth → profiles)
+CREATE OR REPLACE FUNCTION public.admin_delete_user(p_user_id UUID)
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, auth
+AS $$
+BEGIN
+  IF NOT public.is_admin() THEN
+    RAISE EXCEPTION 'Admin access required';
+  END IF;
+
+  IF p_user_id = auth.uid() THEN
+    RAISE EXCEPTION 'Cannot delete your own account';
+  END IF;
+
+  DELETE FROM auth.users WHERE id = p_user_id;
+END;
+$$;

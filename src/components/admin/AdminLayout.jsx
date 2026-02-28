@@ -59,6 +59,7 @@ export default function AdminLayout() {
           </a>
           <nav className="admin-nav">
             <a href="/admin/dashboard">Dashboard</a>
+            <a href="/admin/users">Users</a>
             <a href="/admin/change-password">Change Password</a>
             <button onClick={logout} className="admin-btn admin-btn-outline admin-btn-sm">
               Logout
