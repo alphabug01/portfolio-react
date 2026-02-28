@@ -10,9 +10,40 @@
   justify-content: center;
   background: var(--bg);
   padding: var(--space-md);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dot grid texture behind login card */
+.admin-login::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, var(--text-secondary) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
+/* Soft radial glow behind the card */
+.admin-login::after {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--text-secondary) 0%, transparent 70%);
+  opacity: 0.12;
+  pointer-events: none;
+  border-radius: 50%;
 }
 
 .admin-login-card {
+  position: relative;
+  z-index: 1;
   width: 100%;
   max-width: 400px;
   background: var(--surface);
