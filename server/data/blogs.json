@@ -1,0 +1,113 @@
+[
+  {
+    "slug": "good-enough-ux",
+    "date": "Coming Soon",
+    "readTime": "5 min read",
+    "title": "Why \"Good Enough\" UX Isn't Good Enough",
+    "excerpt": "Thoughts on why settling for functional-but-forgettable interfaces is a missed opportunity...",
+    "content": [
+      {
+        "type": "heading",
+        "text": "Introduction"
+      },
+      {
+        "type": "paragraph",
+        "text": "This is a placeholder for the full blog post. The complete article will explore this topic in depth, sharing insights from real-world experience and practical examples."
+      },
+      {
+        "type": "heading",
+        "text": "Key Insights"
+      },
+      {
+        "type": "paragraph",
+        "text": "Coming soon — this section will dive into the core ideas, backed by examples and lessons learned from building real products."
+      },
+      {
+        "type": "quote",
+        "text": "\"Good design is obvious. Great design is transparent.\" — Joe Sparano"
+      },
+      {
+        "type": "heading",
+        "text": "Conclusion"
+      },
+      {
+        "type": "paragraph",
+        "text": "The full article will wrap up with actionable takeaways and reflections. Stay tuned for the complete piece."
+      }
+    ]
+  },
+  {
+    "slug": "backend-to-frontend-journey",
+    "date": "Coming Soon",
+    "readTime": "4 min read",
+    "title": "From Spring Boot to Next.js: A Backend Dev's Frontend Journey",
+    "excerpt": "What happens when a Java developer falls in love with the frontend ecosystem...",
+    "content": [
+      {
+        "type": "heading",
+        "text": "Introduction"
+      },
+      {
+        "type": "paragraph",
+        "text": "This is a placeholder for the full blog post. The complete article will explore this topic in depth, sharing insights from real-world experience and practical examples."
+      },
+      {
+        "type": "heading",
+        "text": "Key Insights"
+      },
+      {
+        "type": "paragraph",
+        "text": "Coming soon — this section will dive into the core ideas, backed by examples and lessons learned from building real products."
+      },
+      {
+        "type": "quote",
+        "text": "\"Good design is obvious. Great design is transparent.\" — Joe Sparano"
+      },
+      {
+        "type": "heading",
+        "text": "Conclusion"
+      },
+      {
+        "type": "paragraph",
+        "text": "The full article will wrap up with actionable takeaways and reflections. Stay tuned for the complete piece."
+      }
+    ]
+  },
+  {
+    "slug": "design-school-never-attended",
+    "date": "Coming Soon",
+    "readTime": "6 min read",
+    "title": "The Design School I Never Attended",
+    "excerpt": "How an almost-decision shaped my approach to building software...",
+    "content": [
+      {
+        "type": "heading",
+        "text": "Introduction"
+      },
+      {
+        "type": "paragraph",
+        "text": "This is a placeholder for the full blog post. The complete article will explore this topic in depth, sharing insights from real-world experience and practical examples."
+      },
+      {
+        "type": "heading",
+        "text": "Key Insights"
+      },
+      {
+        "type": "paragraph",
+        "text": "Coming soon — this section will dive into the core ideas, backed by examples and lessons learned from building real products."
+      },
+      {
+        "type": "quote",
+        "text": "\"Good design is obvious. Great design is transparent.\" — Joe Sparano"
+      },
+      {
+        "type": "heading",
+        "text": "Conclusion"
+      },
+      {
+        "type": "paragraph",
+        "text": "The full article will wrap up with actionable takeaways and reflections. Stay tuned for the complete piece."
+      }
+    ]
+  }
+]
