@@ -1,18 +1,46 @@
-import { useCallback, useEffect, useState } from 'react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
+  const lastScrollY = useRef(0)
 
-  // Scroll effect
+  // Scroll effect — show on scroll-up, hide on scroll-down
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 80)
+    const updateNavState = (y) => {
+      setScrolled(y > 80)
+      if (mobileOpen || y <= 80) {
+        setHidden(false)
+      } else if (y > lastScrollY.current) {
+        setHidden(true)   // scrolling down
+      } else {
+        setHidden(false)  // scrolling up
+      }
+      lastScrollY.current = y
     }
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+
+    const handleWindowScroll = () => {
+      const y = window.__smoother ? window.__smoother.scrollTop() : window.scrollY
+      updateNavState(y)
+    }
+
+    const navTrigger = ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: (self) => updateNavState(self.scroll()),
+    })
+
+    handleWindowScroll()
+    window.addEventListener('scroll', handleWindowScroll, { passive: true })
+
+    return () => {
+      navTrigger.kill()
+      window.removeEventListener('scroll', handleWindowScroll)
+    }
+  }, [mobileOpen])
 
   // Active section detection
   useEffect(() => {
@@ -34,11 +62,21 @@ export default function Navbar() {
 
   const handleSmoothScroll = useCallback((e, href) => {
     e.preventDefault()
-    const target = document.querySelector(href)
-    if (target) {
-      const offset = 80
-      const top = target.getBoundingClientRect().top + window.scrollY - offset
-      window.scrollTo({ top, behavior: 'smooth' })
+    const section = document.querySelector(href)
+    if (section) {
+      const nav = document.getElementById('nav')
+      const navOffset = nav ? Math.ceil(nav.getBoundingClientRect().height) + 16 : 80
+      // Scroll to the section-label/heading, not the padded section top
+      const heading = section.querySelector('.section-label, .section-heading')
+      const scrollTarget = heading || section
+
+      if (window.__smoother) {
+        const y = scrollTarget.offsetTop - navOffset
+        window.__smoother.scrollTo(y, true) // smooth animation
+      } else {
+        const top = scrollTarget.getBoundingClientRect().top + window.scrollY - navOffset
+        window.scrollTo({ top, behavior: 'smooth' })
+      }
     }
     setMobileOpen(false)
     document.body.style.overflow = ''
@@ -60,7 +98,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className={`nav${scrolled ? ' scrolled' : ''}`} id="nav">
+    <nav className={`nav${scrolled ? ' scrolled' : ''}${hidden ? ' nav-hidden' : ''}`} id="nav">
       <div className="nav-inner">
         <a
           href="#hero"

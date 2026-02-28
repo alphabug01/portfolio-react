@@ -1,25 +1,55 @@
-import { Link, useParams } from 'react-router-dom'
-import { projects } from '../data/projects'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { getProjectBySlug } from '../lib/api'
+import Breadcrumb from './Breadcrumb'
 
 export default function ProjectDetail() {
   const { slug } = useParams()
-  const project = projects.find((item) => item.slug === slug)
+  const location = useLocation()
+  const [project, setProject] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const from = location.state?.from
+  const backTo = from === 'home' ? '/#projects' : '/projects'
+  const backLabel = from === 'home' ? 'Back to home' : 'Back to projects'
+
+  useEffect(() => {
+    getProjectBySlug(slug)
+      .then(setProject)
+      .catch(() => setProject(null))
+      .finally(() => setLoading(false))
+  }, [slug])
+
+  if (loading) {
+    return (
+      <div className="detail-view">
+        <p>Loading...</p>
+      </div>
+    )
+  }
 
   if (!project) {
     return (
       <div className="detail-view">
-        <Link to="/#projects" className="detail-back">
-          &larr; Back to projects
+        <Link to={backTo} className="detail-back">
+          &larr; {backLabel}
         </Link>
         <h2 className="detail-title">Project not found</h2>
       </div>
     )
   }
 
+  const breadcrumbs = [
+    { label: 'Home', to: '/' },
+    { label: 'Projects', to: '/projects' },
+    { label: project.title },
+  ]
+
   return (
     <div className="detail-view">
-      <Link to="/#projects" className="detail-back">
-        &larr; Back to projects
+      <Breadcrumb items={breadcrumbs} />
+      <Link to={backTo} className="detail-back">
+        &larr; {backLabel}
       </Link>
 
       <div className="detail-header">
