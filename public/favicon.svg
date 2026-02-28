@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    rect { fill: #1A1A1A; }
+    text { fill: #FAFAF8; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 700; font-size: 26px; letter-spacing: -1px; }
+    @media (prefers-color-scheme: dark) {
+    rect { fill: #E8E6E1; }
+    text { fill: #121212; }
+    }
+  </style>
+  <rect width="64" height="64" rx="14" />
+  <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle">AS</text>
+</svg>
