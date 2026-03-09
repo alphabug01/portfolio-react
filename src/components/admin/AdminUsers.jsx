@@ -169,6 +169,7 @@ export default function AdminUsers() {
                     value={form.email}
                     onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                     disabled={mode === 'edit'}
+                    autoComplete='off'
                   />
                 </div>
                 {mode === 'add' && (
@@ -181,6 +182,7 @@ export default function AdminUsers() {
                       placeholder="Min 8 characters"
                       value={form.password}
                       onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
+                      autoComplete='off'
                     />
                   </div>
                 )}
