@@ -37,6 +37,7 @@ export default function Blog() {
                   to={`/blog/${post.slug}`}
                   state={{ from: 'home' }}
                   className="blog-card card-item"
+                  aria-label={post.title}
                 >
                   <article>
                     <div className="blog-meta">

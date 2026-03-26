@@ -4,6 +4,21 @@ import { useCardReveal } from '../hooks/useCardReveal'
 import { getProjects } from '../lib/api'
 import { ProjectCardSkeleton } from './SkeletonCard'
 
+// Deterministic warm-neutral gradient per project slug (M2)
+const PLACEHOLDER_GRADIENTS = [
+  'linear-gradient(135deg, oklch(0.88 0.04 60) 0%, oklch(0.82 0.05 30) 100%)',   // warm amber
+  'linear-gradient(135deg, oklch(0.84 0.04 200) 0%, oklch(0.78 0.05 225) 100%)', // muted teal
+  'linear-gradient(135deg, oklch(0.86 0.03 280) 0%, oklch(0.80 0.04 310) 100%)', // dusty mauve
+  'linear-gradient(135deg, oklch(0.85 0.04 140) 0%, oklch(0.79 0.05 160) 100%)', // sage
+  'linear-gradient(135deg, oklch(0.87 0.03 0) 0%, oklch(0.82 0.04 340) 100%)',   // rose blush
+]
+
+function slugGradient(slug) {
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) hash = ((hash * 31) + slug.charCodeAt(i)) >>> 0
+  return PLACEHOLDER_GRADIENTS[hash % PLACEHOLDER_GRADIENTS.length]
+}
+
 export default function Projects() {
   const [projects, setProjects] = useState([])
   const [loading, setLoading] = useState(true)
@@ -26,7 +41,7 @@ export default function Projects() {
         <div className="section-label reveal">03 — Projects</div>
         <h2 className="section-heading reveal">Things I've built.</h2>
         <p className="section-subtext reveal">Selected work — more coming soon.</p>
-        <div className="projects-grid" ref={gridRef}>
+        <div className="projects-grid projects-grid--home" ref={gridRef}>
           {loading
             ? Array.from({ length: 3 }).map((_, i) => <ProjectCardSkeleton key={i} />)
             : featured.map((project) => (
@@ -37,9 +52,12 @@ export default function Projects() {
                   className="project-card card-item"
                 >
                   <article>
-                    <div className="project-image placeholder-img">
+                    <div
+                      className="project-image placeholder-img"
+                      style={{ background: slugGradient(project.slug) }}
+                    >
                       <div className="placeholder-content">
-                        <span>Project {project.number}</span>
+                        <span>{project.title}</span>
                       </div>
                     </div>
                     <div className="project-info">

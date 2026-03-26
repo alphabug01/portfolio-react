@@ -13,39 +13,60 @@ export function useGsapScrollReveal(triggerKey = 0) {
   useEffect(() => {
     const createdTriggers = [];
 
-    const rafId = requestAnimationFrame(() => {
-      const els = document.querySelectorAll(".reveal:not(.visible)");
+    const mm = gsap.matchMedia();
 
-      els.forEach((el) => {
-        const tween = gsap.fromTo(
-          el,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.55,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 98%",
-              toggleActions: "play none none none",
-              once: true,
-              onEnter: () => el.classList.add("visible"),
-            },
-          },
-        );
+    mm.add(
+      {
+        motion: "(prefers-reduced-motion: no-preference)",
+        reducedMotion: "(prefers-reduced-motion: reduce)",
+      },
+      (context) => {
+        const { reducedMotion } = context.conditions;
 
-        if (tween.scrollTrigger) {
-          createdTriggers.push(tween.scrollTrigger);
-        }
-      });
+        const rafId = requestAnimationFrame(() => {
+          const els = document.querySelectorAll(".reveal:not(.visible)");
 
-      ScrollTrigger.refresh();
-    });
+          els.forEach((el) => {
+            if (reducedMotion) {
+              // Show immediately without animation
+              gsap.set(el, { opacity: 1, y: 0 });
+              el.classList.add("visible");
+              return;
+            }
 
-    return () => {
-      cancelAnimationFrame(rafId);
-      createdTriggers.forEach((st) => st.kill());
-    };
+            const tween = gsap.fromTo(
+              el,
+              { opacity: 0, y: 30 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.55,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: el,
+                  start: "top 98%",
+                  toggleActions: "play none none none",
+                  once: true,
+                  onEnter: () => el.classList.add("visible"),
+                },
+              },
+            );
+
+            if (tween.scrollTrigger) {
+              createdTriggers.push(tween.scrollTrigger);
+            }
+          });
+
+          ScrollTrigger.refresh();
+        });
+
+        return () => {
+          cancelAnimationFrame(rafId);
+          createdTriggers.forEach((st) => st.kill());
+        };
+      },
+    );
+
+    return () => mm.revert();
   }, [triggerKey]);
 }

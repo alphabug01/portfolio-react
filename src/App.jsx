@@ -32,7 +32,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 function HomePage() {
   return (
-    <>
+    <main>
       <Hero />
       <About />
       <Skills />
@@ -41,7 +41,7 @@ function HomePage() {
       <Blog />
       <Contact />
       <Footer />
-    </>
+    </main>
   )
 }
 

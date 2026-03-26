@@ -1,0 +1,47 @@
+# Copilot Instructions — Ashwani Senapati Portfolio
+
+## Design Context
+
+### Users
+
+Primarily the design and development community — peers who evaluate craft, subtlety, and technical execution with discerning eyes. Secondary audience is recruiters and hiring managers. The portfolio was built with personal satisfaction as the core motivation. Visitors skim fast but notice quality.
+
+### Brand Personality
+
+**Minimal. Efficient. Creative.**
+
+Voice: quiet confidence — no self-promotion noise, the work speaks. Tone is direct and precise, occasionally dry. Restraint is itself a design decision here.
+
+Emotional goal: leave visitors feeling "this person genuinely gets it" — not awe through spectacle, but respect through craft. The About section beliefs ("complexity is a design failure", "good UX is invisible") are not just copy — they are the design brief.
+
+### Aesthetic Direction
+
+- **Reference:** awwwards.com sensibility — typographic precision, purposeful motion, editorial layouts, details that reward careful attention.
+- **Anti-reference:** "All UI no UX" portfolios — heavy trend-stacking (glassmorphism overload, aggressive gradients, particle systems, hero blobs) that look impressive in screenshots but feel hollow in use. Strong new design patterns used for their own sake rather than to serve the content.
+- **Theme:** Warm neutral light mode as primary (`#FAFAF8` bg, near-monochromatic); dark mode supported via CSS vars. Both are first-class.
+- **Accent color:** Currently monochromatic — any accent must be introduced with restraint. Muted warm tones (dusty terracotta, faded ink, aged brass) are appropriate if used; cool-toned accents would fight the warmth of the palette.
+- **Motion:** GSAP + ScrollSmoother already in place. Animate with purpose: direction, state change, emphasis — never decorative performance.
+- **Typography system:** Inter (body, UI) + Playfair Display (italic accents, editorial moments). Build hierarchy through weight contrast, scale, and spacing before reaching for color or decoration.
+
+### Design Principles
+
+1. **Restraint earns trust.** Every element must justify its presence. When in doubt, remove it rather than tone it down.
+2. **Motion serves meaning.** Animation should direct attention or communicate state — it should never perform for an audience.
+3. **Typography does the heavy lifting.** Hierarchy through scale, weight, and spacing — not decoration.
+4. **The work is the hero.** Layout and chrome exist to frame projects and writing, not to compete with them.
+5. **UX invisible, craft visible.** Interactions should feel obvious to use; the quality of execution is what lingers after the visit.
+
+### Technical Context
+
+- React 18 + Vite, React Router v6
+- GSAP 3 with ScrollTrigger + ScrollSmoother (`window.__smoother`)
+- Custom CSS properties (no utility framework) — warm neutral token system in `src/styles.css`
+- Supabase backend + Express API for blog/projects CMS
+- Admin panel at `/admin/*` — separate aesthetic concern from portfolio front-end
+- Scroll-reveal: `.reveal` class + GSAP batch animation in `useGsapScrollReveal`
+- Theme toggle: `[data-theme='dark']` attribute on `<html>`
+
+### Scope Notes
+
+- Contact section may be removed in a future iteration; social links will remain.
+- Homepage sections: Hero → About → Skills → Experience → Projects → Blog → (Contact) → Footer

@@ -99,6 +99,13 @@ export default function Navbar() {
 
   return (
     <nav className={`nav${scrolled ? ' scrolled' : ''}${hidden ? ' nav-hidden' : ''}`} id="nav">
+      {mobileOpen && (
+        <div
+          className="nav-backdrop"
+          onClick={toggleMobile}
+          aria-hidden="true"
+        />
+      )}
       <div className="nav-inner">
         <a
           href="#hero"
@@ -122,6 +129,7 @@ export default function Navbar() {
         <button
           className={`nav-toggle${mobileOpen ? ' active' : ''}`}
           aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
           onClick={toggleMobile}
         >
           <span></span>

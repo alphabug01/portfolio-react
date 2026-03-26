@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getBlogBySlug } from '../lib/api'
 import Breadcrumb from './Breadcrumb'
+import { BlogDetailSkeleton } from './SkeletonCard'
 
 export default function BlogDetail() {
   const { slug } = useParams()
@@ -21,21 +22,17 @@ export default function BlogDetail() {
   }, [slug])
 
   if (loading) {
-    return (
-      <div className="detail-view">
-        <p>Loading...</p>
-      </div>
-    )
+    return <BlogDetailSkeleton />
   }
 
   if (!post) {
     return (
-      <div className="detail-view">
+      <main className="detail-view">
         <Link to={backTo} className="detail-back">
           &larr; {backLabel}
         </Link>
         <h2 className="detail-title">Blog post not found</h2>
-      </div>
+      </main>
     )
   }
 
@@ -46,7 +43,7 @@ export default function BlogDetail() {
   ]
 
   return (
-    <div className="detail-view">
+    <main className="detail-view">
       <Breadcrumb items={breadcrumbs} />
       <Link to={backTo} className="detail-back">
         &larr; {backLabel}
@@ -100,6 +97,6 @@ export default function BlogDetail() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   )
 }

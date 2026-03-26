@@ -2,6 +2,22 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getProjectBySlug } from '../lib/api'
 import Breadcrumb from './Breadcrumb'
+import { ProjectDetailSkeleton } from './SkeletonCard'
+
+// Deterministic warm-neutral gradient per project slug (M2)
+const PLACEHOLDER_GRADIENTS = [
+  'linear-gradient(135deg, oklch(0.88 0.04 60) 0%, oklch(0.82 0.05 30) 100%)',
+  'linear-gradient(135deg, oklch(0.84 0.04 200) 0%, oklch(0.78 0.05 225) 100%)',
+  'linear-gradient(135deg, oklch(0.86 0.03 280) 0%, oklch(0.80 0.04 310) 100%)',
+  'linear-gradient(135deg, oklch(0.85 0.04 140) 0%, oklch(0.79 0.05 160) 100%)',
+  'linear-gradient(135deg, oklch(0.87 0.03 0) 0%, oklch(0.82 0.04 340) 100%)',
+]
+
+function slugGradient(slug) {
+  let hash = 0
+  for (let i = 0; i < slug.length; i++) hash = ((hash * 31) + slug.charCodeAt(i)) >>> 0
+  return PLACEHOLDER_GRADIENTS[hash % PLACEHOLDER_GRADIENTS.length]
+}
 
 export default function ProjectDetail() {
   const { slug } = useParams()
@@ -21,21 +37,17 @@ export default function ProjectDetail() {
   }, [slug])
 
   if (loading) {
-    return (
-      <div className="detail-view">
-        <p>Loading...</p>
-      </div>
-    )
+    return <ProjectDetailSkeleton />
   }
 
   if (!project) {
     return (
-      <div className="detail-view">
+      <main className="detail-view">
         <Link to={backTo} className="detail-back">
           &larr; {backLabel}
         </Link>
         <h2 className="detail-title">Project not found</h2>
-      </div>
+      </main>
     )
   }
 
@@ -46,7 +58,7 @@ export default function ProjectDetail() {
   ]
 
   return (
-    <div className="detail-view">
+    <main className="detail-view">
       <Breadcrumb items={breadcrumbs} />
       <Link to={backTo} className="detail-back">
         &larr; {backLabel}
@@ -55,16 +67,19 @@ export default function ProjectDetail() {
       <div className="detail-header">
         <span className="detail-label">{project.number}</span>
         <h2 className="detail-title">{project.title}</h2>
-        <div className="project-tags" style={{ marginTop: '0.75rem' }}>
+        <div className="project-tags project-header-tags">
           {project.tags.map((tag) => (
             <span key={tag}>{tag}</span>
           ))}
         </div>
       </div>
 
-      <div className="detail-hero placeholder-img">
+      <div
+        className="detail-hero placeholder-img"
+        style={{ background: slugGradient(slug) }}
+      >
         <div className="placeholder-content">
-          <span>Project {project.number} — Preview</span>
+          <span>{project.title} — Preview</span>
         </div>
       </div>
 
@@ -123,6 +138,6 @@ export default function ProjectDetail() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   )
 }
