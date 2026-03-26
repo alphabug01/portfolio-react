@@ -527,7 +527,7 @@ ul {
    SECTIONS
    ============================================ */
 .section {
-  padding: var(--space-3xl) 0;
+  padding: clamp(var(--space-xl), var(--space-2xl), var(--space-3xl)) 0;
 }
 
 .section-label {
