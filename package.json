@@ -1,7 +1,7 @@
 {
   "name": "portfolio-react",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.7.0-beta",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"node server/index.js\"",

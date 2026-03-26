@@ -7,8 +7,14 @@ import { useEffect } from "react";
  * @param {React.RefObject} containerRef - ref attached to the grid container
  * @param {boolean} ready - set to true when data has loaded and cards are in the DOM
  * @param {string} [selector='.card-item'] - selector for the card elements to animate
+ * @param {*} [trigger] - any value that, when changed, re-fires the animation (e.g. active filter)
  */
-export function useCardReveal(containerRef, ready, selector = ".card-item") {
+export function useCardReveal(
+  containerRef,
+  ready,
+  selector = ".card-item",
+  trigger,
+) {
   useEffect(() => {
     if (!ready || !containerRef.current) return;
 
@@ -30,5 +36,6 @@ export function useCardReveal(containerRef, ready, selector = ".card-item") {
         clearProps: "transform",
       },
     );
-  }, [ready, containerRef, selector]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, containerRef, selector, trigger]);
 }
