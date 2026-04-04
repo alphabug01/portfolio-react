@@ -9,6 +9,22 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html) wi
 
 ---
 
+## [0.8.0-beta] — 2026-04-04
+
+### Changed
+
+- `src/lib/supabase.js` — Supabase JS client explicitly scoped to `portfolio` schema via `db.schema` option
+- `src/lib/api.js` — REST fetch helpers updated with `Accept-Profile` and `Content-Profile: portfolio` headers to match schema restructure
+- `src/styles.css` — project card widths made consistent; scroll section fluidity parameters tuned
+
+### Removed
+
+- `src/data/posts.js`, `src/data/projects.js` — static fallback data deleted (all data now sourced from Supabase)
+- `src/hooks/useScrollReveal.js` — legacy Intersection Observer scroll hook removed (superseded by `useGsapScrollReveal`)
+- `src/context/AuthContext.jsx` — dead code cleaned up
+
+---
+
 ## [0.7.0-beta] — 2026-03-26
 
 ### Added
