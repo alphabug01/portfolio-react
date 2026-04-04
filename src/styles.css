@@ -800,7 +800,7 @@ ul {
    All three cards sit in one row at the same height; the width differential
    is felt rather than announced (≈38% vs ≈31% each). */
 .projects-grid--home {
-  grid-template-columns: 5fr 4fr 4fr;
+  grid-template-columns: 4fr 4fr 4fr;
 }
 
 .project-card {
