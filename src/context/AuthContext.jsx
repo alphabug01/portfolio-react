@@ -71,29 +71,8 @@ export function AuthProvider({ children }) {
     setRole(null)
   }
 
-  /**
-   * Authenticated fetch helper — attaches the Supabase JWT so any
-   * remaining Express routes (server-side) can still validate the token.
-   */
-  async function authFetch(url, options = {}) {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-    return fetch(url, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.access_token ?? ''}`,
-        ...options.headers,
-      },
-    })
-  }
-
-  // `token` kept for backward compat with any component still reading it
-  const token = null
-
   return (
-    <AuthContext.Provider value={{ token, user, role, loading, login, logout, authFetch }}>
+    <AuthContext.Provider value={{ user, role, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

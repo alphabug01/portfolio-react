@@ -19,6 +19,7 @@ async function restFetch(path) {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${SUPABASE_KEY}`,
       "Content-Type": "application/json",
+      "Accept-Profile": "portfolio",
     },
   });
   if (!res.ok)
@@ -65,6 +66,8 @@ async function authRestFetch(path, accessToken, options = {}) {
       apikey: SUPABASE_KEY,
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
+      "Accept-Profile": "portfolio",
+      "Content-Profile": "portfolio",
       Prefer: "return=representation",
       ...(options.headers ?? {}),
     },
